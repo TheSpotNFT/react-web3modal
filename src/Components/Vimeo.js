@@ -3,9 +3,10 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, get } from 'firebase/database';
 import Player from '@vimeo/player';
 
-const VideoPlayer = ({ userId }) => {
+const VideoPlayer = ({ selectedUser }) => {
   const [userVideos, setUserVideos] = useState([]);
   const playerRefs = useRef([]);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     const firebaseConfig = {
@@ -22,7 +23,8 @@ const VideoPlayer = ({ userId }) => {
     const fetchData = async () => {
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
-      const userRef = ref(database, `users/junk/videos`); // Update the path
+      setCurrentUser(selectedUser);
+      const userRef = ref(database, `users/${selectedUser}}/videos`); // Update the path
       
       try {
         const snapshot = await get(userRef);
@@ -30,6 +32,7 @@ const VideoPlayer = ({ userId }) => {
           const videosData = snapshot.val();
           const videoUrls = Object.values(videosData).map(video => video.url);
           setUserVideos(videoUrls);
+         
 
           videoUrls.forEach((videoUrl, index) => {
             console.log(`Video ${index + 1}: ${videoUrl}`);
@@ -44,7 +47,7 @@ const VideoPlayer = ({ userId }) => {
             return new Player(`vimeo-player-${index}`, options);
           });
         } else {
-          console.log('No data found for the provided userId:', userId);
+          console.log('No data found for the provided userId:', currentUser);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -52,14 +55,16 @@ const VideoPlayer = ({ userId }) => {
     };
 
     fetchData();
-  }, [userId]);
+  }, [selectedUser]);
 
   return (
     <div>
+       <div className='font-bold text-xl'>{currentUser}'s Channel3</div>
     {userVideos.length > 0 ? (
   <div>
     {userVideos.map((videoUrl, index) => (
       <div key={index}>
+       
         <h3>Video {index + 1}</h3>
         <div id={`vimeo-player-${index}`}></div>
         
@@ -67,7 +72,7 @@ const VideoPlayer = ({ userId }) => {
     ))}
         </div>
       ) : (
-        <p>No user data found for this userId</p>
+        <p>No user data found for this selected uyser</p>
       )}
     </div>
   );

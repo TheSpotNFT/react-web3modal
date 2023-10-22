@@ -7,8 +7,14 @@ import WalletConnect from "@walletconnect/web3-provider";
 import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
 import VideoPlayer from './Components/Vimeo';
 import VideoForm from './Components/Url';
+import UserList from "./Components/ActiveUsers";
 
 function App() {
+  const [selectedUser, setSelectedUser] = useState(null);
+  const handleUserClick = (user) => {
+    setSelectedUser(user.username);
+    console.log('Selected user:', selectedUser);
+  };
   console.log(process.env.INFURA_ID)
   const providerOptions = {
     binancechainwallet: {
@@ -59,7 +65,7 @@ function App() {
   return (
     <div className="">
       <header className="pt-4 pl-4 pb-4">
-        {connectedAccount && <p>Connected to ${connectedAccount}</p>}
+        {connectedAccount && <p>Connected to {connectedAccount}</p>}
         {!connectedAccount ? (
           <button className="rounded-lg px-4 md:px-8 xl:px-12 py-1 text-xs md:text-l 2xl:text-xl font-mono text-orange-500 bg-slate-900 bg-opacity-80 
           hover:bg-spot-yellow hover:border-white hover:text-orange-300 hover:bg-opacity-100 duration-300" onClick={connectWeb3Wallet}>Connect Wallet</button>
@@ -69,10 +75,11 @@ function App() {
         )}
       </header>
       <div className="flex">
-      <div className='bg-white w-1/2 h-full border-2 border-black p-8'> <VideoForm/></div>
-      <div className='bg-white w-1/2 h-full border-2 border-black p-8'> <VideoPlayer userId="junk" /></div>
+      <div className='bg-white w-1/2 h-full border-2 border-black p-8'> <UserList selectedUser={selectedUser} handleUserClick={handleUserClick} /></div>
+      <div className='bg-white w-3/4 h-full border-2 border-black p-8'> <VideoPlayer selectedUser={selectedUser} /></div>
     </div></div>
   );
 }
 
 export default App;
+//   <div className='bg-white w-1/2 h-full border-2 border-black p-8'> <VideoForm/></div>
