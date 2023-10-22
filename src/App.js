@@ -1,10 +1,12 @@
 import logo from "./logo.svg";
-import "./App.css";
+import './index.css';
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
-import { useState } from "react";
+import React, { useState, useEffect, useCallback } from 'react';
 import WalletConnect from "@walletconnect/web3-provider";
 import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
+import VideoPlayer from './Components/Vimeo';
+import VideoForm from './Components/Url';
 
 function App() {
   console.log(process.env.INFURA_ID)
@@ -55,20 +57,21 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <br />
-
+    <div className="">
+      <header className="pt-4 pl-4 pb-4">
         {connectedAccount && <p>Connected to ${connectedAccount}</p>}
-
         {!connectedAccount ? (
-          <button onClick={connectWeb3Wallet}>Connect Wallet</button>
+          <button className="rounded-lg px-4 md:px-8 xl:px-12 py-1 text-xs md:text-l 2xl:text-xl font-mono text-orange-500 bg-slate-900 bg-opacity-80 
+          hover:bg-spot-yellow hover:border-white hover:text-orange-300 hover:bg-opacity-100 duration-300" onClick={connectWeb3Wallet}>Connect Wallet</button>
         ) : (
-          <button onClick={disconnectWeb3Modal}>Disconnect</button>
+          <button className="rounded-lg px-4 md:px-8 xl:px-12 py-1 text-xs md:text-l 2xl:text-xl font-mono text-orange-500 bg-slate-900 bg-opacity-80 
+          hover:bg-spot-yellow hover:border-white hover:text-orange-300 hover:bg-opacity-100 duration-300" onClick={disconnectWeb3Modal}>Disconnect</button>
         )}
       </header>
-    </div>
+      <div className="flex">
+      <div className='bg-white w-1/2 h-full border-2 border-black p-8'> <VideoForm/></div>
+      <div className='bg-white w-1/2 h-full border-2 border-black p-8'> <VideoPlayer userId="junk" /></div>
+    </div></div>
   );
 }
 
