@@ -13,7 +13,7 @@ function App() {
   const [selectedUser, setSelectedUser] = useState(null);
   const handleUserClick = (user) => {
     setSelectedUser(user.username);
-    console.log('Selected user:', selectedUser);
+    console.log('Selected user:', selectedUser)
   };
   console.log(process.env.INFURA_ID)
   const providerOptions = {

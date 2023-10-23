@@ -24,7 +24,7 @@ const VideoPlayer = ({ selectedUser }) => {
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
       setCurrentUser(selectedUser);
-      const userRef = ref(database, `users/${selectedUser}}/videos`); // Update the path
+      const userRef = ref(database, `users/junk/videos`); // Update the path
       
       try {
         const snapshot = await get(userRef);
